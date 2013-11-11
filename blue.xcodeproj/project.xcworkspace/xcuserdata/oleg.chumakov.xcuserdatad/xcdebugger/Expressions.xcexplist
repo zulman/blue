@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "cocos2d::extension::CCNodeLoaderLibrary::getCCNodeLoader(char const*):CCNodeLoaderLibrary.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "pClassName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "cocos2d::GB2ShapeCache::addFixturesToBody(b2Body*, std::string const&amp;):GB2ShapeCache-x.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "PolygonSprite::initWithTexture(cocos2d::CCTexture2D*, b2Body*, bool):PolygonSprite.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "cocos2d::CCNode::addChild(cocos2d::CCNode*, int, int):CCNode.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_bRunning">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PRFilledPolygon::calculateTextureCoordinates():PRFilledPolygon.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "textureCoordinates">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "cocos2d::extension::CCBReader::readNodeGraphFromData(cocos2d::extension::CCData*, cocos2d::CCObject*, cocos2d::CCSize const&amp;):CCBReader.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "mBytes">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "cocos2d::GB2ShapeCache::addShapesWithFile(std::string const&amp;):GB2ShapeCache-x.cpp">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
