@@ -43,7 +43,7 @@ private:
     int m_iCount;
     void resetMotionStreak();
     void addMotionStreakPoint(CCPoint point);
-    
+    float getArea(const b2Vec2* vs, int32 count);
     CCPoint _startPoint;
     CCPoint _endPoint;
     

@@ -359,10 +359,16 @@ void PhysGameScene::splitPolygonSprite(PolygonSprite* sprite) {
     sprite1VerticesSorted = this->arrangeVertices(sprite1Vertices, sprite1VertexCount);
     sprite2VerticesSorted = this->arrangeVertices(sprite2Vertices, sprite2VertexCount);
     
+    float area1 = this->getArea(sprite1VerticesSorted, sprite1VertexCount);
+    float area2 = this->getArea(sprite2VerticesSorted, sprite2VertexCount);
+    
+    CCLOG("area1=%f area2=%f epsilon=%f", area1, area2, b2_epsilon);
+    
+    
     //step 4:
     //Box2D has some restrictions with defining shapes, so you have to consider these. You only cut the shape if both shapes pass certain requirements from our function
-    bool sprite1VerticesAcceptable = this->areVerticesAcceptable(sprite1VerticesSorted, sprite1VertexCount);
-    bool sprite2VerticesAcceptable = this->areVerticesAcceptable(sprite2VerticesSorted, sprite2VertexCount);
+    bool sprite1VerticesAcceptable = this->areVerticesAcceptable(sprite1VerticesSorted, sprite1VertexCount) && area1 > b2_epsilon;
+    bool sprite2VerticesAcceptable = this->areVerticesAcceptable(sprite2VerticesSorted, sprite2VertexCount) && area2 > b2_epsilon;;
     
     //step 5:
     //you destroy the old shape and create the new shapes and sprites
@@ -437,6 +443,41 @@ void PhysGameScene::splitPolygonSprite(PolygonSprite* sprite) {
     explosion = loadExplosion();
     explosion->setPosition(pos1);
     this->addChild(explosion);
+}
+
+float PhysGameScene::getArea(const b2Vec2* vs, int32 count)
+{
+    if(count < 3)
+        return 0;
+    
+    b2Vec2 c; c.Set(0.0f, 0.0f);
+    float32 area = 0.0f;
+    
+    // pRef is the reference point for forming triangles.
+    // It's location doesn't change the result (except for rounding error).
+    b2Vec2 pRef(0.0f, 0.0f);
+    const float32 inv3 = 1.0f / 3.0f;
+    
+    for (int32 i = 0; i < count; ++i)
+    {
+        // Triangle vertices.
+        b2Vec2 p1 = pRef;
+        b2Vec2 p2 = vs[i];
+        b2Vec2 p3 = i + 1 < count ? vs[i+1] : vs[0];
+        
+        b2Vec2 e1 = p2 - p1;
+        b2Vec2 e2 = p3 - p1;
+        
+        float32 D = b2Cross(e1, e2);
+        
+        float32 triangleArea = 0.5f * D;
+        area += triangleArea;
+        
+        // Area weighted centroid
+        c += triangleArea * inv3 * (p1 + p2 + p3);
+    }
+    
+    return area;
 }
 
 bool PhysGameScene::areVerticesAcceptable(b2Vec2* vertices, int count) {

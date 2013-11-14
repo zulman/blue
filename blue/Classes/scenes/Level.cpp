@@ -1,6 +1,6 @@
 #include "Level.h"
 #include "Dragon.h"
-
+#include "scenes_manager.h"
 
 #define kCJScrollFilterFactor 0.1
 #define kCJDragonTargetOffset 80
@@ -131,10 +131,38 @@ bool Level::ccTouchBegan(CCTouch *ptouch, CCEvent *pEvent)
 {
     PhysGameScene::ccTouchBegan(ptouch, pEvent);
 //    CCLOG("ccTouchBegan level");
-    CCPoint location = ptouch->getLocationInView();
+    CCPoint location = this->convertTouchToNodeSpace(ptouch);
     _dragon->setXTarget(location.x);
 
+    CCLOG("dragon (%f, %f) touch (%f, %f)",
+          _dragon->getPosition().x, _dragon->getPosition().y,
+          location.x, location.y);
     
+    CCObject* child;
+    CCARRAY_FOREACH(this->getChildren(), child)
+    {
+        GameObject* gameObject = dynamic_cast<GameObject*>(child);
+        // Check if the child is a game object
+        if (gameObject)
+        {
+            // Update all game objects
+            gameObject->update();
+            
+            // Check for collisions with dragon
+//            if (gameObject != _dragon)
+//            {
+                if (ccpDistance(gameObject->getPosition(), location) < gameObject->getRadius())
+                {
+                    // Notify the game objects that they have collided
+//                    gameObject->handleCollisionWith(_dragon);
+                    CCNode* explosion = loadExplosion();
+                    explosion->setPosition(location);
+                    this->addChild(explosion);
+
+                }
+//            }
+        }
+    }
     return true;
 }
 
@@ -143,7 +171,7 @@ void Level::ccTouchMoved(CCTouch *ptouch, CCEvent *pEvent)
     PhysGameScene::ccTouchMoved(ptouch, pEvent);
 //    CCLOG("ccTouchMoved level");
 
-    CCPoint location = ptouch->getLocationInView();
+    CCPoint location = this->convertTouchToNodeSpace(ptouch);
     _dragon->setXTarget(location.x);
 }
 
